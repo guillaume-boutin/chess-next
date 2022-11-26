@@ -16,7 +16,7 @@ function Board () {
 
     return (
         <div className={style.board}>
-            { makeSquares().map((square, i) => <Square key={i} x={square.x} y={square.y} />) }
+            { makeSquares().map((square, i) => <Square key={i} x={square.x} y={square.y} piece={{ type: "black", color: "queen"}} />) }
         </div>
     )
 }

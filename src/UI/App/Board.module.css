@@ -1,8 +1,6 @@
 .board {
     width: 800px;
     height: 800px;
-    background: green;
-
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
