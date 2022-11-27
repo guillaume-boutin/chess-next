@@ -1,4 +1,4 @@
-class Piece {
+abstract class Piece {
     public color: string;
 
     public type: string;
@@ -17,6 +17,14 @@ class Piece {
         this.color = color;
         this.type = type;
         this.square = square;
+    }
+
+    public static white<P extends Piece>(this: { new(color: string, square: { x: number, y: number }): P}, x: number, y: number): P {
+        return new this("white", { x, y });
+    }
+
+    public static black<P extends Piece>(this: { new(color: string, square: { x: number, y: number }): P}, x: number, y: number): P {
+        return new this("black", { x, y });
     }
 }
 
