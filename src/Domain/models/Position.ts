@@ -1,5 +1,5 @@
 import Color from "./Color";
-import { Piece } from "./Pieces";
+import { Pawn, Piece } from "./Pieces";
 import { Move, Square } from ".";
 
 class Position {
@@ -7,8 +7,31 @@ class Position {
 
     public lastMove: Move = Move.null();
 
+    private _potentialMoves: Move[] = [];
+
     constructor (pieces: Piece[]) {
         this.pieces = pieces;
+
+        this._setPotentialMoves();
+    }
+
+    get potentialMoves(): Move[] {
+        return this._potentialMoves;
+    }
+
+    private _setPotentialMoves(): void {
+        var moves: Move[] = [];
+
+        this.pieces.forEach(piece => {
+            piece.setPotentialSquares(this);
+
+            moves = [
+                ...moves,
+                ...piece.potentialSquares.map(endSquare => new Move(piece.square, endSquare))
+            ];
+        });
+
+        this._potentialMoves = moves;
     }
 
     applyMove(move: Move) {
@@ -55,6 +78,14 @@ class Position {
         if (! piece) return false;
 
         return piece.color.equals(color);
+    }
+
+    isPawnCapturing(move: Move): boolean {
+        const piece = this.getPiece(move.start);
+
+        if (!(piece instanceof Pawn)) return false;
+
+        return move.end.minus(move.start).x !== 0;
     }
 }
 

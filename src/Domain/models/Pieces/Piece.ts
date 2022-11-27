@@ -1,4 +1,4 @@
-import { Color, Move, Square } from "..";
+import { Color, Move, Position, Square } from "..";
 import { PieceType } from "../../enums/PieceType";
 
 abstract class Piece {
@@ -19,6 +19,8 @@ abstract class Piece {
     public get potentialSquares(): Square[] {
         return this._potentialSquares;
     }
+
+    abstract setPotentialSquares(position: Position): void;
 
     abstract get type(): PieceType;
 
