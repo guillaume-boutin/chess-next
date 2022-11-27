@@ -1,5 +1,3 @@
-"use client";
-
 import {Board} from ".";
 import style from "./App.module.css";
 

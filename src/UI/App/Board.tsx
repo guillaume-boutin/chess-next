@@ -1,7 +1,13 @@
+"use client";
+
 import style from "./Board.module.css";
 import {Square} from ".";
+import { useState } from "react";
+import { Position } from "../../Domain/models";
 
 function Board () {
+    const [ position, setPosition ] = useState<Position>(new Position());
+
     function makeSquares(): { x: number, y: number }[] {
         let squares: { x: number, y: number }[] = [];
 
@@ -16,7 +22,17 @@ function Board () {
 
     return (
         <div className={style.board}>
-            { makeSquares().map((square, i) => <Square key={i} x={square.x} y={square.y} piece={{ type: "black", color: "queen"}} />) }
+            { makeSquares().map((square, i) => {
+                const piece = position.pieces.find(p => p.x === square.x && p.y === square.y) ?? null
+
+                return (
+                    <Square
+                        key={i}
+                        x={square.x}
+                        y={square.y}
+                        piece={piece} />
+                )
+            })}
         </div>
     )
 }
