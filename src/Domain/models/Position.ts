@@ -1,34 +1,37 @@
-import { Bishop, King, Knight, Pawn, Piece, Queen, Rook } from "./Pieces";
+import { equal } from "assert";
+import { Piece } from "./Pieces";
+import Square from "./Square";
 
 class Position {
     public pieces: Piece[];
 
-    constructor () {
-        this.pieces = initialPosition();
-    }
-}
-
-const initialPosition = (): Piece[] => {
-    let pieces: Piece[] = [];
-
-    for (let x = 1; x < 9; x++) {
-        pieces = [ ...pieces, Pawn.white(x, 2), Pawn.black(x, 7)];
+    constructor (pieces: Piece[]) {
+        this.pieces = pieces;
     }
 
-    return [
-        ... pieces,
-        Rook.white(1, 1), Rook.white(8, 1),
-        Rook.black(1, 8), Rook.black(8, 8),
+    public at(x: number, y: number): Piece | null {
+        return this.pieces.find(p => p.x === x && p.y === y) || null;
+    }
 
-        Knight.white(2, 1), Knight.white(7, 1),
-        Knight.black(2, 8), Knight.black(7, 8),
+    public removeAt(x: number, y: number): void {
+        var index = this.pieces.findIndex(p => p.x === x && p.y === y);
 
-        Bishop.white(3, 1), Bishop.white(6, 1),
-        Bishop.black(3, 8), Bishop.black(6, 8),
+        if (index === -1) return;
 
-        Queen.white(4, 1), King.white(5, 1),
-        Queen.black(4, 8), King.black(5, 8),
-    ];
+        let pieces = [ ...this.pieces ];
+        pieces = [ ...pieces.slice(0, index), ...pieces.slice(index+1) ];
+        this.pieces = pieces;
+    }
+
+    public move(start: Square, end: Square): void {
+        if (!this.at(start.x, start.y)) return;
+
+        this.removeAt(end.x, end.y);
+
+        const index = this.pieces.findIndex(p => p.square.equals(start));
+
+        this.pieces[index].setSquare(new Square(end.x, end.y));
+    }
 }
 
 export default Position;

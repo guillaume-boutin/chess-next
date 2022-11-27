@@ -7,7 +7,9 @@ interface IProp {
 
 function Piece({ type, color }: IProp) {
     return (
-        <div className={`${style.piece} ${style[type]} ${style[color]}`} />
+        <div
+            className={`${style.piece} ${style[type]} ${style[color]}`}
+        />
     )
 }
 
