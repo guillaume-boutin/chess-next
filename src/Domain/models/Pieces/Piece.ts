@@ -1,11 +1,12 @@
-import { Square } from "..";
+import { Color, Move, Square } from "..";
+import { PieceType } from "../../enums/PieceType";
 
 abstract class Piece {
-    public color: string;
-
-    public type: string;
+    public color: Color;
 
     public square: Square;
+
+    public lastMove: Move = Move.null();
 
     public get x(): number {
         return this.square.x;
@@ -15,22 +16,33 @@ abstract class Piece {
         return this.square.y;
     }
 
-    constructor(color: string, type: string, square: Square) {
+    public get potentialSquares(): Square[] {
+        return this._potentialSquares;
+    }
+
+    abstract get type(): PieceType;
+
+    protected _potentialSquares: Square[] = [];
+
+    constructor(color: Color, square: Square) {
         this.color = color;
-        this.type = type;
         this.square = square;
     }
 
-    public static white<P extends Piece>(this: { new(color: string, square: Square): P}, x: number, y: number): P {
-        return new this("white", new Square(x, y));
+    public static white<P extends Piece>(this: { new(color: Color, square: Square): P}, x: number, y: number): P {
+        return new this(Color.white(), new Square(x, y));
     }
 
-    public static black<P extends Piece>(this: { new(color: string, square: Square): P}, x: number, y: number): P {
-        return new this("black", new Square(x, y));
+    public static black<P extends Piece>(this: { new(color: Color, square: Square): P}, x: number, y: number): P {
+        return new this(Color.black(), new Square(x, y));
     }
 
     public setSquare(square: Square) {
         this.square = square;
+    }
+
+    public mightMoveTo(square: Square): boolean {
+        return this._potentialSquares.findIndex(cs => cs.equals(square)) > -1;
     }
 }
 

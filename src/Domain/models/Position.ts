@@ -1,20 +1,31 @@
-import { equal } from "assert";
+import Color from "./Color";
 import { Piece } from "./Pieces";
-import Square from "./Square";
+import { Move, Square } from ".";
 
 class Position {
     public pieces: Piece[];
+
+    public lastMove: Move = Move.null();
 
     constructor (pieces: Piece[]) {
         this.pieces = pieces;
     }
 
-    public at(x: number, y: number): Piece | null {
-        return this.pieces.find(p => p.x === x && p.y === y) || null;
+    applyMove(move: Move) {
+        const startPiece = this.getPiece(move.start);
+        if (!startPiece) return;
+
+        this.removePiece(move.end);
+        this.movePiece(move);
+        this.lastMove = move;
     }
 
-    public removeAt(x: number, y: number): void {
-        var index = this.pieces.findIndex(p => p.x === x && p.y === y);
+    getPiece(square: Square): Piece | null {
+        return this.pieces.find(p => p.square.equals(square)) || null;
+    }
+
+    removePiece(square: Square): void {
+        var index = this.pieces.findIndex(p => p.square.equals(square));
 
         if (index === -1) return;
 
@@ -23,14 +34,27 @@ class Position {
         this.pieces = pieces;
     }
 
-    public move(start: Square, end: Square): void {
-        if (!this.at(start.x, start.y)) return;
+    movePiece(move: Move): void {
+        let index = this.pieces.findIndex(p => p.square.equals(move.start));
 
-        this.removeAt(end.x, end.y);
+        if (index === -1) return;
 
-        const index = this.pieces.findIndex(p => p.square.equals(start));
+        const piece = this.pieces[index];
+        piece.square = move.end;
+        piece.lastMove = move;
+        this.pieces[index] = piece;
+    }
 
-        this.pieces[index].setSquare(new Square(end.x, end.y));
+    isOccupied(square: Square) {
+        return this.getPiece(square) !== null;
+    }
+
+    isOccupiedByColor(color: Color, square: Square) {
+        const piece = this.getPiece(square);
+
+        if (! piece) return false;
+
+        return piece.color.equals(color);
     }
 }
 

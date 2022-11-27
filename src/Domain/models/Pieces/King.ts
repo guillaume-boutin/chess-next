@@ -1,9 +1,14 @@
 import { Piece } from ".";
-import { Square } from "..";
+import { Color, Square } from "..";
+import { PieceType } from "../../enums/PieceType";
 
 class King extends Piece {
-    constructor(color: string, square: Square) {
-        super(color, "king", square);
+    constructor(color: Color, square: Square) {
+        super(color, square);
+    }
+
+    get type(): PieceType {
+        return PieceType.KING;
     }
 }
 

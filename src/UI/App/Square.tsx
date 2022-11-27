@@ -21,7 +21,7 @@ function Square({ x, y, piece, onClick }: IProps) {
 
     return (
         <div onClick={_handleClick} className={styles}>
-            { piece ? <Piece type={piece.type} color={piece.color} /> : null }
+            { piece ? <Piece type={piece.type} color={piece.color.value} /> : null }
         </div>
     )
 }

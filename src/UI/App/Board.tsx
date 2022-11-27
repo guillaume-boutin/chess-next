@@ -5,7 +5,7 @@ import { Square } from ".";
 import { useState } from "react";
 import { Position } from "../../Domain/models";
 import { initialPosition } from "../../Domain/models/initialPosition";
-import { Square as SquareModel } from "../../Domain/models";
+import { Square as SquareModel, Move as MoveModel } from "../../Domain/models";
 import { Piece as PieceModel } from "../../Domain/models/Pieces";
 
 function Board () {
@@ -33,7 +33,7 @@ function Board () {
 
             console.log(grabbedPiece.square, square);
 
-            position.move(grabbedPiece.square, square);
+            position.applyMove(new MoveModel(grabbedPiece.square, square));
             setGrabbedPiece(null);
             return setPosition(position);
         }
