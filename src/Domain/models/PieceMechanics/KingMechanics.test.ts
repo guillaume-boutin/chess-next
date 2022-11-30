@@ -6,9 +6,8 @@ import KingMechanics from "./KingMechanics";
 describe("King mechanics", () => {
     test("King mechanics allow to move one square in every 8 directions", () => {
         const mechanics = new KingMechanics(
-            Color.white(),
             new Square(3, 4),
-            new Position([])
+            new Position([ King.white(3, 4) ])
         );
 
         expect(mechanics.allow(new Square(3, 5))).toBe(true);
@@ -23,9 +22,8 @@ describe("King mechanics", () => {
 
     test("King mechanics don't allow to move more than one square in any direction", () => {
         const mechanics = new KingMechanics(
-            Color.black(),
             new Square(3, 4),
-            new Position([])
+            new Position([ King.black(3, 4) ])
         );
 
         expect(mechanics.allow(new Square(3, 6))).toBe(false);
@@ -33,9 +31,8 @@ describe("King mechanics", () => {
 
     test("King mechanics allow to move to a square occupied by an opposite color piece", () => {
         const mechanics = new KingMechanics(
-            Color.white(),
             new Square(3, 4),
-            new Position([ Bishop.black(3, 5) ])
+            new Position([ King.white(3, 4), Bishop.black(3, 5) ])
         );
 
         expect(mechanics.allow(new Square(3, 5))).toBe(true);
@@ -43,9 +40,8 @@ describe("King mechanics", () => {
 
     test("King mechanics don't allow to move to a square occupied by a same color piece", () => {
         const mechanics = new KingMechanics(
-            Color.black(),
             new Square(3, 4),
-            new Position([ Bishop.black(3, 5) ])
+            new Position([ King.black(3, 4), Bishop.black(3, 5) ])
         );
 
         expect(mechanics.allow(new Square(3, 5))).toBe(false);
@@ -53,9 +49,8 @@ describe("King mechanics", () => {
 
     test("King mechanics allow castle", () => {
         const mechanics = new KingMechanics(
-            Color.white(),
             new Square(5, 1),
-            new Position([])
+            new Position([ King.white(5, 1) ])
         );
 
         expect(mechanics.allow(new Square(3, 1))).toBe(true);
@@ -64,9 +59,8 @@ describe("King mechanics", () => {
 
     test("King mechanics don't allow castle if there is a piece of same color in the way", () => {
         const mechanics = new KingMechanics(
-            Color.black(),
             new Square(5, 8),
-            new Position([ Bishop.black(6, 8), Queen.black(3, 8) ])
+            new Position([ King.white(5, 8), Bishop.black(6, 8), Queen.black(3, 8) ])
         );
 
         expect(mechanics.allow(new Square(3, 8))).toBe(false);
@@ -75,9 +69,8 @@ describe("King mechanics", () => {
 
     test("King mechanics don't allow castle if there is a piece of opposite color in the way", () => {
         const mechanics = new KingMechanics(
-            Color.white(),
             new Square(5, 1),
-            new Position([ Bishop.black(7, 1), Knight.black(4, 1) ])
+            new Position([ King.white(5, 1), Bishop.black(7, 1), Knight.black(4, 1) ])
         );
 
         expect(mechanics.allow(new Square(3, 1))).toBe(false);
@@ -89,7 +82,6 @@ describe("King mechanics", () => {
         king.lastMove = new Move(new Square(5, 7), new Square(5, 8));
 
         const mechanics = new KingMechanics(
-            Color.black(),
             new Square(5, 8),
             new Position([ king ])
         );

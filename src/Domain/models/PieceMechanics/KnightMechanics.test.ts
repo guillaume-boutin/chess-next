@@ -6,9 +6,8 @@ import { Knight, Bishop } from "../Pieces";
 describe("Knight mechanics", () => {
     test("Knight mechanics allow all of its 8 L-shaped moves", () => {
         const mechanics = new KnightMechanics(
-            Color.white(),
             new Square(5, 4),
-            new Position([])
+            new Position([ Knight.white(5, 4) ])
         );
 
         expect(mechanics.allow(new Square(6, 6))).toBe(true);
@@ -23,9 +22,8 @@ describe("Knight mechanics", () => {
 
     test("Knight mechanics don't allow to move out of board", () => {
         const mechanics = new KnightMechanics(
-            Color.black(),
             new Square(2, 7),
-            new Position([])
+            new Position([ Knight.black(2, 7) ])
         );
 
         expect(mechanics.allow(new Square(3, 9))).toBe(false);
@@ -33,9 +31,8 @@ describe("Knight mechanics", () => {
 
     test("Knight mechanics don't allow to move to a square occupied by a same color piece", () => {
         const mechanics = new KnightMechanics(
-            Color.white(),
             new Square(5, 4),
-            new Position([ Bishop.white(6, 2) ])
+            new Position([ Knight.white(5, 4), Bishop.white(6, 2) ])
         );
 
         expect(mechanics.allow(new Square(6, 2))).toBe(false);
@@ -43,9 +40,8 @@ describe("Knight mechanics", () => {
 
     test("Knight mechanics allow to move to a square occupied by an opposite color piece", () => {
         const mechanics = new KnightMechanics(
-            Color.black(),
             new Square(5, 4),
-            new Position([ Bishop.white(6, 2) ])
+            new Position([ Knight.black(5, 4), Bishop.white(6, 2) ])
         );
 
         expect(mechanics.allow(new Square(6, 2))).toBe(true);

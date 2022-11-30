@@ -1,10 +1,10 @@
 import { describe, test, expect } from "@jest/globals";
 import { Move, Square } from "..";
-import { Knight } from ".";
+import { Knight } from "../Pieces";
 
 describe("Piece class", () => {
     describe("Piece.move", () => {
-        test("method changes piece's square", () => {
+        test("Piece.move method changes piece's square", () => {
             const piece = Knight.black(5,5);
 
             piece.move(new Square(3,2));

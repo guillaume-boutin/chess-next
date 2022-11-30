@@ -9,11 +9,11 @@ abstract class PieceMechanics {
 
     protected _allowedSquares: Square[] = [];
 
-    constructor(color: Color, square: Square, position: Position) {
-        this.color = color;
-        this.square = square;
+    constructor(square: Square, position: Position) {
         this.position = position;
-        this.piece = this.position.getPiece(square);
+        this.piece = position.getPiece(square);
+        this.color = this.piece.color;
+        this.square = this.piece.square;
 
         this.setAllowedSquares();
     }
