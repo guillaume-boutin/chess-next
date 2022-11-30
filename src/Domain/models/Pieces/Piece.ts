@@ -1,12 +1,17 @@
 import { Color, Move, Position, Square } from "..";
 import { PieceType } from "../../enums/PieceType";
 
-abstract class Piece {
+class Piece {
     public color: Color;
 
     public square: Square;
 
     public lastMove: Move = Move.null();
+
+    constructor(color: Color, square: Square) {
+        this.color = color;
+        this.square = square;
+    }
 
     public get x(): number {
         return this.square.x;
@@ -16,19 +21,20 @@ abstract class Piece {
         return this.square.y;
     }
 
-    public get potentialSquares(): Square[] {
-        return this._potentialSquares;
+    get type(): PieceType {
+        return PieceType.NULL;
     }
 
-    abstract setPotentialSquares(position: Position): void;
+    get hasMoved(): boolean {
+        return !this.lastMove.isNull;
+    }
 
-    abstract get type(): PieceType;
+    public get isNull(): boolean {
+        return this.square.isNull() && this.type === PieceType.NULL;
+    }
 
-    protected _potentialSquares: Square[] = [];
-
-    constructor(color: Color, square: Square) {
-        this.color = color;
-        this.square = square;
+    public static null(): Piece {
+        return new Piece(Color.white(), Square.null());
     }
 
     public static white<P extends Piece>(this: { new(color: Color, square: Square): P}, x: number, y: number): P {
@@ -39,12 +45,9 @@ abstract class Piece {
         return new this(Color.black(), new Square(x, y));
     }
 
-    public setSquare(square: Square) {
+    public move(square: Square) {
+        this.lastMove = new Move(this.square, square);
         this.square = square;
-    }
-
-    public mightMoveTo(square: Square): boolean {
-        return this._potentialSquares.findIndex(cs => cs.equals(square)) > -1;
     }
 }
 

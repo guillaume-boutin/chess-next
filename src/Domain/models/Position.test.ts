@@ -22,7 +22,7 @@ describe("Position class", () => {
 
             const piece = position.getPiece(new Square(3, 6));
 
-            expect(piece).toBeNull();
+            expect(piece.isNull).toBe(true);
         });
     });
 
@@ -34,7 +34,7 @@ describe("Position class", () => {
 
             position.removePiece(new Square(7, 2));
 
-            expect(position.getPiece(new Square(7, 2))).toBeNull();
+            expect(position.getPiece(new Square(7, 2)).isNull).toBe(true)
         });
     });
 
@@ -49,7 +49,7 @@ describe("Position class", () => {
 
             position.movePiece(new Move(startSquare, endSquare));
 
-            expect(position.getPiece(startSquare)).toBeNull();
+            expect(position.getPiece(startSquare).isNull).toBe(true)
             expect(position.getPiece(endSquare)).toBeInstanceOf(Rook);
         });
 

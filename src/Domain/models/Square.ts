@@ -27,9 +27,17 @@ class Square {
         return new Square(this.x - square.x, this.y - square.y);
     }
 
+    plusX(x: number): Square {
+        return new Square(this.x + x, this.y);
+    }
+
+    plusY(y: number): Square {
+        return new Square(this.x, this.y + y);
+    }
+
     isInBound(): boolean {
-        return this.x >= 0 && this.x <= 8
-            && this.y >=0 && this.y <= 8;
+        return this.x >= 1 && this.x <= 8
+            && this.y >= 1 && this.y <= 8;
     }
 }
 

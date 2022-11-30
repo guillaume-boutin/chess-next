@@ -13,7 +13,7 @@ class Move {
         return new Move(Square.null(), Square.null());
     }
 
-    isNull(): boolean {
+    get isNull(): boolean {
         return this.equals(Move.null());
     }
 
