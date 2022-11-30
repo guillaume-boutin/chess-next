@@ -1,6 +1,11 @@
+import { Position } from ".";
 import { Bishop, King, Knight, Pawn, Piece, Queen, Rook } from "./Pieces";
 
-export const initialPosition = (): Piece[] => {
+export const initialPosition = () => {
+    return new Position(pieces());
+}
+
+const pieces = (): Piece[] => {
     let pieces: Piece[] = [];
 
     for (let x = 1; x < 9; x++) {

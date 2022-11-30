@@ -3,15 +3,16 @@
 import style from "./Board.module.css";
 import { Square } from ".";
 import { useState } from "react";
-import { Position } from "../../Domain/models";
-import { initialPosition } from "../../Domain/models/initialPosition";
-import { Square as SquareModel, Move as MoveModel } from "../../Domain/models";
+import { Board as BoardModel, Square as SquareModel, Move as MoveModel } from "../../Domain/models";
 import { Piece as PieceModel } from "../../Domain/models/Pieces";
 
-function Board () {
-    const [ position, setPosition ] = useState<Position>(new Position(initialPosition()));
+interface IProps {
+    model: BoardModel,
+    onMove: (e: MoveModel) => void
+}
 
-    const [ grabbedPiece, setGrabbedPiece ] = useState<PieceModel | null>(null);
+function Board ({ model, onMove }: IProps) {
+    const [ grabbedPiece, setGrabbedPiece ] = useState<PieceModel>(PieceModel.null())
 
     function makeSquares(): SquareModel[] {
         let squares: SquareModel[] = [];
@@ -28,39 +29,31 @@ function Board () {
     function onSquareClick(e: {x: number, y: number, piece: PieceModel | null}) {
         const square = new SquareModel(e.x, e.y);
 
-        if (grabbedPiece) {
-            if (grabbedPiece.square.equals(new SquareModel(e.x, e.y))) return;
+        const newGrabbedPiece = model.position.getPiece(square);
 
-            console.log(grabbedPiece.square, square);
+        if (grabbedPiece.isNull)
+            return setGrabbedPiece(newGrabbedPiece);
 
-            position.applyMove(new MoveModel(grabbedPiece.square, square));
-            setGrabbedPiece(null);
-            return setPosition(position);
-        }
+        const move = new MoveModel(grabbedPiece.square, square);
+        setGrabbedPiece(PieceModel.null());
 
-        if (!e.piece) return;
-
-        setGrabbedPiece(e.piece);
-    }
-
-    function _handleSquareClick() {
-        console.log("click");
+        onMove(move);
     }
 
     return (
         <div className={style.board}>
-            { makeSquares().map((square, i) => {
-                const piece = position.pieces.find(p => p.square.equals(square)) ?? null
+        { makeSquares().map((square, i) => {
+            const piece = model.position.getPiece(square);
 
-                return (
-                    <Square
-                        key={i}
-                        x={square.x}
-                        y={square.y}
-                        piece={piece}
-                        onClick={onSquareClick} />
-                )
-            })}
+            return (
+                <Square
+                    key={i}
+                    x={square.x}
+                    y={square.y}
+                    piece={piece}
+                    onClick={onSquareClick} />
+            )
+        })}
         </div>
     )
 }

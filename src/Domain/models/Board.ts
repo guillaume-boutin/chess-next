@@ -1,10 +1,18 @@
-import { Piece } from "./Pieces";
+import { Move, Position } from ".";
 
 class Board {
-    public pieces: Piece[];
+    public position: Position;
 
-    constructor(pieces: Piece[]) {
-        this.pieces = pieces;
+    constructor(position: Position) {
+        this.position = position;
+    }
+
+    isLegal(move: Move): boolean {
+        return true;
+    }
+
+    applyMove(move: Move) {
+        this.position.applyMove(move);
     }
 }
 

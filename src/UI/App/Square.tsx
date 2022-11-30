@@ -1,4 +1,3 @@
-import { type } from "os";
 import { Piece } from ".";
 import style from "./Square.module.css";
 import { Piece as PieceModel } from "../../Domain/models/Pieces"
@@ -6,8 +5,8 @@ import { Piece as PieceModel } from "../../Domain/models/Pieces"
 interface IProps {
     x: number,
     y: number,
-    piece: PieceModel | null,
-    onClick: (e: { x: number, y: number, piece: PieceModel | null}) => void
+    piece: PieceModel,
+    onClick: (e: { x: number, y: number, piece: PieceModel }) => void
 }
 
 function Square({ x, y, piece, onClick }: IProps) {
@@ -21,7 +20,10 @@ function Square({ x, y, piece, onClick }: IProps) {
 
     return (
         <div onClick={_handleClick} className={styles}>
-            { piece ? <Piece type={piece.type} color={piece.color.value} /> : null }
+        { piece.isNull
+            ? null
+            : <Piece type={piece.type} color={piece.color.value} />
+        }
         </div>
     )
 }
