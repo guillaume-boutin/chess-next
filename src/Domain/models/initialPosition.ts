@@ -2,10 +2,15 @@ import { Position } from ".";
 import { Bishop, King, Knight, Pawn, Piece, Queen, Rook } from "./Pieces";
 
 export const initialPosition = () => {
-    return new Position(pieces());
+    let pieces;
+    pieces = initialPieces();
+
+    // pieces = [ Pawn.white(5,2)];
+
+    return new Position(pieces);
 }
 
-const pieces = (): Piece[] => {
+const initialPieces = (): Piece[] => {
     let pieces: Piece[] = [];
 
     for (let x = 1; x < 9; x++) {

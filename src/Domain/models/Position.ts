@@ -11,13 +11,19 @@ class Position {
         this.pieces = pieces;
     }
 
-    applyMove(move: Move) {
-        const piece = this.getPiece(move.start);
-        if (piece.isNull) return;
+    applyMove(move: Move): Position {
+        let piece = this.getPiece(move.start);
+        if (piece.isNull) return this;
 
         this.removePiece(move.end);
+        const index = this.pieces.findIndex(p => p.square.equals(move.start));
+
+        piece = this.pieces[index];
         piece.move(move.end);
+        this.pieces[index] = piece;
         this.lastMove = move;
+
+        return this;
     }
 
     getPiece(square: Square): Piece {

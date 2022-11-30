@@ -15,12 +15,14 @@ class Game {
         return this.board.isLegal(move);
     }
 
-    tryMove(move: Move) {
-        if (!this.isLegal(move)) return;
+    tryMove(move: Move): Game {
+        if (!this.isLegal(move)) return this;
 
-        this.board.applyMove(move);
+        this.board = this.board.applyMove(move);
 
         this.punch();
+
+        return this;
     }
 
     punch() {

@@ -29,6 +29,8 @@ function Board ({ model, onMove }: IProps) {
     function onSquareClick(e: {x: number, y: number, piece: PieceModel | null}) {
         const square = new SquareModel(e.x, e.y);
 
+        if (square.equals(grabbedPiece.square)) return;
+
         const newGrabbedPiece = model.position.getPiece(square);
 
         if (grabbedPiece.isNull)

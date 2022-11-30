@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Board } from ".";
 import { Game as GameModel, Board as BoardModel, Move as MoveModel } from "../../Domain/models";
 import { initialPosition } from "../../Domain/models/initialPosition";
@@ -12,16 +12,15 @@ import { initialPosition } from "../../Domain/models/initialPosition";
 function Game() {
     const position = initialPosition();
     const board = new BoardModel(position);
-    const model = new GameModel(board)
 
-    const [ game, setGame ] = useState<GameModel>(model);
+    const [ model, setModel ] = useState<GameModel>(new GameModel(board));
 
     const onMove = (move: MoveModel): void => {
         model.tryMove(move);
-        setGame(model);
+        setModel(model);
     }
 
-    return <Board model={game.board} onMove={onMove} />
+    return <Board model={model.board} onMove={onMove} />
 }
 
 export default Game;

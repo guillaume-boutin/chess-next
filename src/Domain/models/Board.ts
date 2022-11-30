@@ -1,4 +1,4 @@
-import { Move, Position } from ".";
+import { Move, Position, Square } from ".";
 
 class Board {
     public position: Position;
@@ -11,8 +11,10 @@ class Board {
         return true;
     }
 
-    applyMove(move: Move) {
-        this.position.applyMove(move);
+    applyMove(move: Move): Board {
+        this.position = this.position.applyMove(move);
+
+        return this;
     }
 }
 
