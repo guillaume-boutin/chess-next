@@ -11,11 +11,11 @@ class Board {
         return true;
     }
 
-    applyMove(move: Move): Board {
-        this.position = this.position.applyMove(move);
-
-        return this;
+    applyMove(move: Move) {
+        this.position.applyMove(move);
     }
+
+    punch() {}
 }
 
 export default Board;

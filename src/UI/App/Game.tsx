@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Board } from ".";
-import { Game as GameModel, Board as BoardModel, Move as MoveModel } from "../../Domain/models";
+import { Game as GameModel, Board as BoardModel, Move as MoveModel, Position, Color } from "../../Domain/models";
 import { initialPosition } from "../../Domain/models/initialPosition";
 
 // interface IProps {
@@ -10,17 +10,29 @@ import { initialPosition } from "../../Domain/models/initialPosition";
 // }
 
 function Game() {
-    const position = initialPosition();
-    const board = new BoardModel(position);
+    const [ board, setBoard ] = useState<BoardModel>(new BoardModel(new Position([])));
+    const [ toPlay, setToPlay ] = useState<Color>(Color.white());
 
-    const [ model, setModel ] = useState<GameModel>(new GameModel(board));
+    useState(() => {
+        const position = initialPosition();
+        const board = new BoardModel(position);
+
+        setBoard(board);
+    });
 
     const onMove = (move: MoveModel): void => {
-        model.tryMove(move);
-        setModel(model);
+        if (!board.isLegal(move)) return;
+
+        board.applyMove(move);
+        setBoard(board);
+        punch();
     }
 
-    return <Board model={model.board} onMove={onMove} />
+    function punch() {
+        setToPlay(toPlay.opposite);
+    }
+
+    return <Board model={board} toPlay={toPlay} onMove={onMove} />
 }
 
 export default Game;

@@ -11,7 +11,7 @@ class Square {
         return new Square(0, 0);
     }
 
-    isNull(): boolean {
+    get isNull(): boolean {
         return this.equals(Square.null());
     }
 

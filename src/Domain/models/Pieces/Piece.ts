@@ -30,11 +30,13 @@ class Piece {
     }
 
     public get isNull(): boolean {
-        return this.square.isNull() && this.type === PieceType.NULL;
+        return this.square.isNull
+            && this.type === PieceType.NULL
+            && this.color.isNull;
     }
 
     public static null(): Piece {
-        return new Piece(Color.white(), Square.null());
+        return new Piece(Color.null(), Square.null());
     }
 
     public static white<P extends Piece>(this: { new(color: Color, square: Square): P}, x: number, y: number): P {

@@ -3,15 +3,16 @@
 import style from "./Board.module.css";
 import { Square } from ".";
 import { useState } from "react";
-import { Board as BoardModel, Square as SquareModel, Move as MoveModel } from "../../Domain/models";
+import { Board as BoardModel, Square as SquareModel, Move as MoveModel, Color } from "../../Domain/models";
 import { Piece as PieceModel } from "../../Domain/models/Pieces";
 
 interface IProps {
     model: BoardModel,
+    toPlay: Color,
     onMove: (e: MoveModel) => void
 }
 
-function Board ({ model, onMove }: IProps) {
+function Board ({ model, toPlay, onMove }: IProps) {
     const [ grabbedPiece, setGrabbedPiece ] = useState<PieceModel>(PieceModel.null())
 
     function makeSquares(): SquareModel[] {
@@ -29,17 +30,28 @@ function Board ({ model, onMove }: IProps) {
     function onSquareClick(e: {x: number, y: number, piece: PieceModel | null}) {
         const square = new SquareModel(e.x, e.y);
 
-        if (square.equals(grabbedPiece.square)) return;
-
-        const newGrabbedPiece = model.position.getPiece(square);
-
         if (grabbedPiece.isNull)
-            return setGrabbedPiece(newGrabbedPiece);
+            return _tryGrabPiece(square);
+
+        const endPiece = model.position.getPiece(square);
+
+        if (endPiece.color.equals(toPlay)) {
+            setGrabbedPiece(endPiece);
+            return;
+        }
 
         const move = new MoveModel(grabbedPiece.square, square);
-        setGrabbedPiece(PieceModel.null());
 
         onMove(move);
+        setGrabbedPiece(PieceModel.null);
+    }
+
+    function _tryGrabPiece(square: SquareModel) {
+        const piece = model.position.getPiece(square);
+
+        if (!piece.color.equals(toPlay)) return;
+
+        setGrabbedPiece(piece);
     }
 
     return (

@@ -15,7 +15,17 @@ class Color {
         return new Color(ColorName.BLACK);
     }
 
+    public static null(): Color {
+        return new Color(ColorName.NULL);
+    }
+
+    get isNull(): boolean {
+        return this.value === ColorName.NULL;
+    }
+
     get opposite(): Color {
+        if (this.isNull) return this;
+
         return this.value === ColorName.WHITE
             ? Color.black() : Color.white();
     }

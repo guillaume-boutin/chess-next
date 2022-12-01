@@ -15,18 +15,17 @@ class Game {
         return this.board.isLegal(move);
     }
 
-    tryMove(move: Move): Game {
+    tryMove(move: Move) {
         if (!this.isLegal(move)) return this;
 
-        this.board = this.board.applyMove(move);
+        this.board.applyMove(move);
 
         this.punch();
-
-        return this;
     }
 
     punch() {
-        // this.toPlay = this.toPlay.opposite;
+        this.toPlay = this.toPlay.opposite;
+        console.log(this.toPlay);
 
         // punch the clock
 
