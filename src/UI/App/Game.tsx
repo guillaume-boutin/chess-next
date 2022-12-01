@@ -10,29 +10,20 @@ import { initialPosition } from "../../Domain/models/initialPosition";
 // }
 
 function Game() {
-    const [ board, setBoard ] = useState<BoardModel>(new BoardModel(new Position([])));
-    const [ toPlay, setToPlay ] = useState<Color>(Color.white());
-
-    useState(() => {
-        const position = initialPosition();
-        const board = new BoardModel(position);
-
-        setBoard(board);
-    });
+    const [ board, setBoard ] = useState<BoardModel>(new BoardModel(initialPosition(), Color.white()));
 
     const onMove = (move: MoveModel): void => {
         if (!board.isLegal(move)) return;
 
         board.applyMove(move);
-        setBoard(board);
         punch();
     }
 
     function punch() {
-        setToPlay(toPlay.opposite);
+        setBoard(board);
     }
 
-    return <Board model={board} toPlay={toPlay} onMove={onMove} />
+    return <Board model={board} onMove={onMove} />
 }
 
 export default Game;

@@ -1,14 +1,17 @@
 import Color from "./Color";
-import { Piece } from "./Pieces";
-import { Move, Square } from ".";
+import { King, Piece } from "./Pieces";
+import { Move, PotentialMoves, Square } from ".";
 
 class Position {
     public pieces: Piece[];
 
     public lastMove: Move = Move.null();
 
+    public potentialMoves: PotentialMoves;
+
     constructor (pieces: Piece[]) {
         this.pieces = pieces;
+        this.potentialMoves = new PotentialMoves(this);
     }
 
     applyMove(move: Move) {
@@ -18,6 +21,8 @@ class Position {
         this.removePiece(move.end);
         piece.move(move.end);
         this.lastMove = move;
+
+        this.potentialMoves = new PotentialMoves(this);
     }
 
     getPiece(square: Square): Piece {
@@ -44,6 +49,14 @@ class Position {
         if (piece.isNull) return false;
 
         return piece.color.equals(color);
+    }
+
+    isKingUnderCheck(color: Color) {
+        const threateningMoves = this.potentialMoves.getKingsThreateningMoves(color);
+
+        const king = this.pieces.find(piece => (piece instanceof King) && piece.color.equals(color)) || Piece.null();
+
+        return threateningMoves.findIndex(move => move.end.equals(king.square)) > -1;
     }
 }
 

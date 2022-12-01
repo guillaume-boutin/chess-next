@@ -51,6 +51,11 @@ class Piece {
         this.lastMove = new Move(this.square, square);
         this.square = square;
     }
+
+    public copy(): Piece {
+        const ctor = this.constructor as any;
+        return new ctor(new Color(this.color.value), new Square(this.square.x, this.square.y));
+    }
 }
 
 export default Piece;

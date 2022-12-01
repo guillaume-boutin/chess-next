@@ -4,3 +4,4 @@ export { default as Color } from "./Color";
 export { default as Move } from "./Move";
 export { default as Game } from "./Game";
 export { default as Board } from "./Board";
+export { default as PotentialMoves } from "./PotentialMoves";

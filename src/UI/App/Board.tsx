@@ -8,11 +8,10 @@ import { Piece as PieceModel } from "../../Domain/models/Pieces";
 
 interface IProps {
     model: BoardModel,
-    toPlay: Color,
     onMove: (e: MoveModel) => void
 }
 
-function Board ({ model, toPlay, onMove }: IProps) {
+function Board ({ model, onMove }: IProps) {
     const [ grabbedPiece, setGrabbedPiece ] = useState<PieceModel>(PieceModel.null())
 
     function makeSquares(): SquareModel[] {
@@ -35,7 +34,7 @@ function Board ({ model, toPlay, onMove }: IProps) {
 
         const endPiece = model.position.getPiece(square);
 
-        if (endPiece.color.equals(toPlay)) {
+        if (endPiece.color.equals(model.toPlay)) {
             setGrabbedPiece(endPiece);
             return;
         }
@@ -49,7 +48,7 @@ function Board ({ model, toPlay, onMove }: IProps) {
     function _tryGrabPiece(square: SquareModel) {
         const piece = model.position.getPiece(square);
 
-        if (!piece.color.equals(toPlay)) return;
+        if (!piece.color.equals(model.toPlay)) return;
 
         setGrabbedPiece(piece);
     }

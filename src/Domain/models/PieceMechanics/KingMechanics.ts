@@ -37,6 +37,8 @@ class KingMechanics extends PieceMechanics {
     private setPotentialSquaresAlongDirection(direction: Square) {
         let currentSquare = this.square.plus(direction);
 
+        if (!currentSquare.isInBound()) return;
+
         if (this.position.isOccupiedByColor(this.color, currentSquare)) return;
 
         this._allowedSquares = [ ...this._allowedSquares, currentSquare ];

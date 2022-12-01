@@ -1,4 +1,6 @@
+import { BishopMechanics, KingMechanics, KnightMechanics, PawnMechanics, QueenMechanics, RookMechanics } from ".";
 import { Color, Position, Square } from "..";
+import { PieceType } from "../../enums/PieceType";
 import { Piece } from "../Pieces";
 
 abstract class PieceMechanics {
@@ -16,6 +18,21 @@ abstract class PieceMechanics {
         this.square = this.piece.square;
 
         this.setAllowedSquares();
+    }
+
+    public static make(square: Square, position: Position): PieceMechanics {
+        const piece = position.getPiece(square);
+
+        switch (piece.type) {
+            case PieceType.KING: return new KingMechanics(square, position);
+            case PieceType.QUEEN: return new QueenMechanics(square, position);
+            case PieceType.BISHOP: return new BishopMechanics(square, position);
+            case PieceType.KNIGHT: return new KnightMechanics(square, position);
+            case PieceType.ROOK: return new RookMechanics(square, position);
+            case PieceType.PAWN: return new PawnMechanics(square, position);
+
+            default: throw `No mechanics for piece type ${piece.type} at square (${square.x}, ${square.y})`;
+        }
     }
 
     get potentialSquare(): Square[] {
