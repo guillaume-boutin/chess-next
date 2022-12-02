@@ -22,7 +22,7 @@ class PotentialMoves {
         );
     }
 
-    getKingsThreateningMoves(color: Color) {
+    threateningFor(color: Color) {
         return this
             .getByColor(color.opposite)
             .filter(move => {

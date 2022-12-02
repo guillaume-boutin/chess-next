@@ -1,29 +1,47 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Board } from ".";
-import { Game as GameModel, Board as BoardModel, Move as MoveModel, Position, Color } from "../../Domain/models";
+import { Game as GameModel, Board as BoardModel, Move as MoveModel, Color, Square as SquareModel } from "../../Domain/models";
 import { initialPosition } from "../../Domain/models/initialPosition";
-
-// interface IProps {
-//     model: GameModel
-// }
+import { Piece as PieceModel } from "../../Domain/models/Pieces";
 
 function Game() {
-    const [ board, setBoard ] = useState<BoardModel>(new BoardModel(initialPosition(), Color.white()));
+    const [ model, setModel ] = useState<GameModel>(new GameModel(
+        new BoardModel(initialPosition(), Color.white())
+    ));
+    const [ grabbedPiece, setGrabbedPiece ] = useState<PieceModel>(PieceModel.null());
 
-    const onMove = (move: MoveModel): void => {
-        if (!board.isLegal(move)) return;
+    function onBoardClick(e: { square: SquareModel, piece: PieceModel}) {
+        if (grabbedPiece.isNull)
+            return _tryGrabPiece(e.piece);
 
-        board.applyMove(move);
-        punch();
+        if (e.piece.color.equals(model.toPlay))
+            return setGrabbedPiece(e.piece);
+
+        const move = new MoveModel(grabbedPiece.square, e.square);
+
+        _applyMove(move);
+        setGrabbedPiece(PieceModel.null);
     }
 
-    function punch() {
-        setBoard(board);
+    function _tryGrabPiece(piece: PieceModel) {
+        if (!piece.color.equals(model.toPlay)) return;
+
+        setGrabbedPiece(piece);
     }
 
-    return <Board model={board} onMove={onMove} />
+    function _applyMove(move: MoveModel) {
+        if (!model.isLegal(move)) return;
+
+        const moved = model.tryMove(move);
+
+        if (moved) setGrabbedPiece(PieceModel.null());
+
+        setModel(model);
+    }
+
+    return <Board model={model.board} onClick={onBoardClick} />
 }
 
 export default Game;

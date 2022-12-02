@@ -4,9 +4,11 @@
 }
 
 .square.light {
-    background: #ccc;
+    /* background: #ccc; */
+    background: #ebdbb9;
 }
 
 .square.dark {
-    background: #555;
+    /* background: #888; */
+    background: #b1886a
 }
