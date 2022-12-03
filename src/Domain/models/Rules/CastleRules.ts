@@ -12,7 +12,7 @@ class CastleRules {
         this._move = move;
         this._position = position;
         this._piece = this._position.getPiece(move.start);
-        this._diff = Math.abs(move.end.minus(move.start).x);
+        this._diff = move.end.minus(move.start).x;
         this._direction = this._diff > 0 ? 1 : -1;
     }
 
@@ -33,7 +33,7 @@ class CastleRules {
     isCastle(): boolean {
         if (!(this._piece instanceof King)) return false;
 
-        return this._diff == 2;
+        return Math.abs(this._diff) == 2;
     }
 
     isLegal() {

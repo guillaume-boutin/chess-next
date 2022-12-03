@@ -41,7 +41,7 @@ function Game() {
         setModel(model);
     }
 
-    return <Board model={model.board} onClick={onBoardClick} />
+    return <Board model={model.board} onClick={onBoardClick} grabbedPiece={grabbedPiece} />
 }
 
 export default Game;
