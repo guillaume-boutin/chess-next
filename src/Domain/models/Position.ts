@@ -1,6 +1,7 @@
 import Color from "./Color";
 import { King, Piece } from "./Pieces";
 import { Move, PotentialMoves, Square } from ".";
+import { CastleRules } from "./Rules";
 
 class Position {
     public pieces: Piece[];
@@ -21,8 +22,7 @@ class Position {
     }
 
     _applyPieceMove(move: Move) {
-        if (this.isCastle(move))
-            return this._applyCastle(move);
+        if (new CastleRules(move, this).isCastle()) return this._applyCastle(move);
 
         const piece = this.getPiece(move.start);
         this.removePiece(move.end);
@@ -30,12 +30,10 @@ class Position {
     }
 
     _applyCastle(move: Move) {
-        const direction = move.end.minus(move.start).x > 0 ? 1 : -1;
+        const rules = new CastleRules(move, this);
 
-        const rookStartSquare = new Square(direction > 0 ? 8 : 1, move.start.y);
-        const rookEndSquare = move.start.plus(new Square(direction, 0));
-        const rook = this.getPiece(rookStartSquare);
-        rook.move(rookEndSquare);
+        const rook = this.getPiece(rules.rookStartSquare);
+        rook.move(rules.rookEndSquare);
 
         const king = this.getPiece(move.start);
         king.move(move.end);
@@ -79,14 +77,6 @@ class Position {
         return this.potentialMoves
             .threateningFor(color)
             .findIndex(move => square.equals(move.end)) > -1;
-    }
-
-    isCastle(move: Move): boolean {
-        const piece = this.getPiece(move.start);
-
-        if (!(piece instanceof King)) return false;
-
-        return Math.abs(move.end.minus(move.start).x) === 2;
     }
 }
 

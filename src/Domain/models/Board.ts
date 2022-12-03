@@ -1,5 +1,6 @@
 import { Color, Move, Position, Square } from ".";
 import { King } from "./Pieces";
+import { CastleRules } from "./Rules";
 
 class Board {
     public position: Position;
@@ -33,31 +34,10 @@ class Board {
 
             if (possiblePosition.isKingUnderCheck(color)) return false;
 
-            if (this._isCastle(pm)) return this._isCastleMoveLegal(pm);
+            if (!new CastleRules(pm, this.position).isLegal()) return false;
 
             return true;
         });
-    }
-
-    _isCastle(move: Move): boolean {
-        const piece = this.position.getPiece(move.start);
-
-        if (!(piece instanceof King)) return false;
-
-        return Math.abs(move.end.minus(move.start).x) === 2;
-    }
-
-    _isCastleMoveLegal(move: Move) {
-        // Can't castle if under check
-        if (this.position.isThreatened(this.toPlay, move.start)) return false;
-
-        // Can't castle if crossing through a check
-        const deltaX = move.end.minus(move.start).x > 0 ? 1 : -1;
-        const crossingSquare = move.start.plus(new Square(deltaX, 0));
-
-        if (this.position.isThreatened(this.toPlay, crossingSquare)) return false;
-
-        return true;
     }
 }
 
