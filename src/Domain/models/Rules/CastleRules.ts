@@ -1,5 +1,6 @@
 import { Move, Position, Square } from "..";
 import { King, Piece } from "../Pieces";
+import UnderCheckRules from "./UnderCheckRules";
 
 class CastleRules {
     private _move: Move;
@@ -30,24 +31,32 @@ class CastleRules {
         )
     }
 
-    isCastle(): boolean {
-        if (!(this._piece instanceof King)) return false;
+    attemptingCastle(): boolean {
+        if (!(this._piece.isKing)) return false;
 
         return Math.abs(this._diff) == 2;
     }
 
     isLegal() {
-        if (!this.isCastle) return false;
+        if (!this.attemptingCastle()) return false;
 
-        // Can't castle if under check
-        if (this._position.isThreatened(this._piece.color, this._move.start)) return false;
+        // Can't castle if king is under check
+        if (new UnderCheckRules(this._position).isUnderCheck(this._piece.color)) return false;
 
         // Can't castle if crossing through a check
-        const crossingSquare = this._move.start.plus(new Square(this._diff, 0));
-
-        if (this._position.isThreatened(this._piece.color, crossingSquare)) return false;
+        const crossingSquare = this._move.start.plus(new Square(this._direction, 0));
+        const newPosition = this._position.apply(
+            new Move(this._move.start, crossingSquare)
+        );
+        if (new UnderCheckRules(newPosition).isUnderCheck(this._piece.color)) return false;
 
         return true;
+    }
+
+    apply(): Position {
+        return this._position
+            .apply(new Move(this.rookStartSquare, this.rookEndSquare))
+            .apply(this._move);
     }
 }
 

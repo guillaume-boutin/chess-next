@@ -28,18 +28,6 @@ class PotentialMoves {
         ) > -1;
     }
 
-    // threateningFor(color: Color) {
-    //     return this
-    //         .forColor(color.opposite)
-    //         .filter(move => {
-    //             const piece = this._position.getPiece(move.start);
-
-    //             if (!(piece instanceof Pawn)) return true;
-
-    //             return move.end.minus(move.start).x !== 0;
-    //         });
-    // }
-
     private _setMoves() {
         const mechanics = this._position.pieces.map(p => PieceMechanics.make(p.square, this._position));
 
