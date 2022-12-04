@@ -29,12 +29,9 @@ class Position {
     }
 
     apply(move: Move): Position {
-        let pieces = this._copyPieces();
-
-        pieces = this._removePiece(move.end, pieces);
-        pieces = this._movePiece(move, pieces);
-
-        return new Position(pieces, move);
+        return this
+            .removeAt(move.end)
+            ._move(move);
     }
 
     isOccupied(square: Square) {
@@ -49,26 +46,33 @@ class Position {
         return piece.color.equals(color);
     }
 
+    removeAt(square: Square): Position {
+        let pieces = this._copyPieces();
+        const index = pieces.findIndex(p => p.square.equals(square));
+        if (index === -1) return this;
+
+        pieces = [ ...pieces.slice(-0, index), ...pieces.slice(index+1) ];
+
+        return new Position(pieces, this.lastMove.copy())
+    }
+
     private _copyPieces(): Piece[] {
         return this.pieces.map(piece => piece.copy());
     }
 
-    private _movePiece(move: Move, pieces: Piece[]): Piece[] {
-        const index = pieces.findIndex(p => p.square.equals(move.start));
-        if (index === -1) return pieces;
+    private _move(move: Move): Position {
+        let pieces = this._copyPieces();
 
-        return [
+        const index = pieces.findIndex(p => p.square.equals(move.start));
+        if (index === -1) this;
+
+        pieces = [
             ...pieces.slice(0, index),
             pieces[index].move(move.end),
             ...pieces.slice(index+1)
         ];
-    }
 
-    private _removePiece(square: Square, pieces: Piece[]): Piece[] {
-        const index = pieces.findIndex(p => p.square.equals(square));
-        if (index === -1) return pieces;
-
-        return [ ...pieces.slice(0, index), ...pieces.slice(index+1) ];
+        return new Position(pieces, move);
     }
 }
 

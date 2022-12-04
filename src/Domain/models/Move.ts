@@ -17,6 +17,10 @@ class Move {
         return this.equals(Move.null());
     }
 
+    get step(): Square {
+        return this.end.minus(this.start);
+    }
+
     copy(): Move {
         return new Move(this.start.copy(), this.end.copy());
     }
