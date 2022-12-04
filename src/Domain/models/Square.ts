@@ -15,6 +15,10 @@ class Square {
         return this.equals(Square.null());
     }
 
+    copy(): Square {
+        return new Square(this.x, this.y);
+    }
+
     equals(square: Square): boolean {
         return this.x === square.x && this.y === square.y;
     }

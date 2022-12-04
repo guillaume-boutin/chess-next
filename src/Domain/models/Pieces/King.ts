@@ -2,13 +2,13 @@ import { Piece } from ".";
 import { Color, Position, Square } from "..";
 import { PieceType } from "../../enums/PieceType";
 
-class King extends Piece {
-    constructor(color: Color, square: Square) {
-        super(color, square);
+class King {
+    static white(x: number, y: number): Piece {
+        return new Piece(Color.white(), PieceType.KING, new Square(x, y));
     }
 
-    get type(): PieceType {
-        return PieceType.KING;
+    static black(x: number, y: number): Piece {
+        return new Piece(Color.black(), PieceType.KING, new Square(x, y));
     }
 }
 

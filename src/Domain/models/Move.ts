@@ -17,6 +17,10 @@ class Move {
         return this.equals(Move.null());
     }
 
+    copy(): Move {
+        return new Move(this.start.copy(), this.end.copy());
+    }
+
     equals(move: Move): boolean {
         return this.start.equals(move.start) && this.end.equals(move.end);
     }

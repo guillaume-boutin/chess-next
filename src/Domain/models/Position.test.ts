@@ -6,12 +6,22 @@ import Position from "./Position";
 import Square from "./Square";
 
 describe("Position class", () => {
+    describe("position.copy method", () => {
+        test("position.copy return a new instance of a position", () => {
+            let position = new Position([]);
+            let newPosition = position.copy();
+
+            expect(position === position).toBe(true);
+            expect(position === newPosition).toBe(false);
+        });
+    });
+
     describe("position.getPiece method", () => {
         test("method returns a piece", () => {
             const position = new Position([ King.white(3, 6) ]);
             const piece = position.getPiece( new Square(3, 6));
 
-            expect(piece).toBeInstanceOf(King);
+            expect(piece.isKing).toBe(true);
         });
 
         test("method returns a null piece if there is not piece", () => {
@@ -22,47 +32,42 @@ describe("Position class", () => {
         });
     });
 
-    describe("position.removePiece method", () => {
-        test("Position.removePiece method removes a piece from the position", () => {
-            const position = new Position([ Rook.black(4, 7) ]);
-            position.removePiece(new Square(4, 7));
+    describe("Position.apply method", () => {
+        test("Position.apply method moves a piece from one square to another", () => {
+            const move = new Move(new Square(2, 5), new Square(4, 6));
+            let position = new Position([ Knight.white(2, 5) ]);
+            position = position.apply(move);
 
-            expect(position.getPiece(new Square(4, 7)).isNull).toBe(true);
-        });
-    });
-
-    describe("Position.applyMove method", () => {
-        test("Position.applyMove method moves a piece from one square to another", () => {
-            const position = new Position([ Knight.white(2, 5) ]);
-            position.applyMove(new Move(new Square(2, 5), new Square(4, 6)));
-
-            expect(position.getPiece(new Square(4, 6))).toBeInstanceOf(Knight);
+            expect(position.getPiece(move.start).isNull).toBe(true);
+            expect(position.getPiece(move.end).isKnight).toBe(true);
         });
 
-        test("Position.applyMove method sets the last move for the piece", () => {
-            const position = new Position([ Bishop.black(2, 7) ]);
-            const move = new Move(new Square(2, 7), new Square(3, 6));
-            position.applyMove(move);
-
-            const pieceLastMove = position.getPiece(move.end).lastMove;
-            expect(pieceLastMove.equals(move)).toBe(true);
-        });
-
-        test("Position.applyMove method replaces the piece on the end square by the one on the start square", () => {
-            const position = new Position([ Queen.white(8, 4), Rook.black(3, 4) ]);
+        test("Position.apply method replaces the piece on the end square by the one on the start square", () => {
+            let position = new Position([ Queen.white(8, 4), Rook.black(3, 4) ]);
             const move = new Move(new Square(8, 4), new Square(3, 4));
-            position.applyMove(move);
+            position = position.apply(move);
 
-            expect(position.getPiece(move.end)).toBeInstanceOf(Queen);
+            expect(position.getPiece(move.end).isQueen).toBe(true);
             expect(position.pieces.length).toBe(1);
         });
 
-        test("Position.applyMove sets the last move for the position", () => {
-            const position = new Position([ Pawn.black(3, 7) ]);
+        test("Position.apply sets the last move for the position", () => {
+            let position = new Position([ Pawn.black(3, 7) ]);
             const move = new Move(new Square(3, 7), new Square(3, 5));
-            position.applyMove(move);
+            position = position.apply(move);
 
             expect(position.lastMove.equals(move)).toBe(true);
+        });
+
+        test("Position.apply doesn't change any values from the original position", () => {
+            const position = new Position([ Bishop.white(5, 6) ]);
+            const move = new Move(new Square(5, 6), new Square(7, 4));
+            const newPosition = position.apply(move);
+
+            expect(newPosition.lastMove.equals(position.lastMove)).toBe(false);
+            const newPiece = newPosition.getPiece(move.end);
+            const piece = position.getPiece(move.start);
+            expect(newPiece === piece).toBe(false);
         });
     });
 
