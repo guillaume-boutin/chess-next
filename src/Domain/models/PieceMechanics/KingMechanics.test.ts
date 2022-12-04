@@ -77,9 +77,8 @@ describe("King mechanics", () => {
         expect(mechanics.allow(new Square(7, 1))).toBe(false);
     });
 
-    test("Kings mechanics don't allow castle if King has already moved", () => {
-        const king = King.black(5, 8);
-        king.lastMove = new Move(new Square(5, 7), new Square(5, 8));
+    test("King mechanics don't allow castle if King has already moved", () => {
+        const king = King.black(5, 7).move(new Square(7, 8));
 
         const mechanics = new KingMechanics(
             new Square(5, 8),

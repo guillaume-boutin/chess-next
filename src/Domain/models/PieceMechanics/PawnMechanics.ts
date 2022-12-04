@@ -85,7 +85,7 @@ class PawnMechanics extends PieceMechanics {
 
                 const piece = this.position.getPiece(opponentPawnSquare);
 
-                if (!(piece instanceof Pawn)) return false;
+                if (!(piece.isPawn)) return false;
                 if (!piece.color.equals(this.color.opposite)) return false;
 
                 const twoStepsMove = new Move(

@@ -1,6 +1,6 @@
 import { describe, test, expect } from "@jest/globals"
 import { PawnMechanics } from ".";
-import { Color, Move, Position, Square } from "..";
+import { Move, Position, Square } from "..";
 import { Bishop, Knight, Pawn } from "../Pieces";
 
 describe("Pawn mechanics", () => {
@@ -109,9 +109,10 @@ describe("Pawn mechanics", () => {
 
     describe("Pawn en-passant mechanics", () => {
         test("Pawn mechanics allow to capture en-passant", () => {
-            const position = new Position([ Pawn.black(3, 4), Pawn.white(4, 4) ]);
-
-            position.lastMove = new Move(new Square(4, 2), new Square(4, 4));
+            let position = new Position(
+                [ Pawn.black(3, 4), Pawn.white(4, 4) ],
+                new Move(new Square(4, 2), new Square(4, 4))
+            );
 
             const mechanics = new PawnMechanics(new Square(3, 4), position);
 
@@ -119,8 +120,10 @@ describe("Pawn mechanics", () => {
         });
 
         test("Pawn mechanics doesn't allow to capture en-passant if opponent's pawn move wasn't move wasn't its latest one", () => {
-            const position = new Position([ Pawn.white(6, 5), Pawn.black(5, 5) ]);
-            position.lastMove = new Move(new Square(8, 8), new Square(8, 1));
+            const position = new Position(
+                [ Pawn.white(6, 5), Pawn.black(5, 5) ],
+                new Move(new Square(8, 8), new Square(8, 1))
+            );
 
             const mechanics = new PawnMechanics(new Square(6, 5), position);
 
@@ -128,8 +131,10 @@ describe("Pawn mechanics", () => {
         });
 
         test("Pawn cannot capture en-passant if opponent's pawn move wasn't a two steps move", () => {
-            const position = new Position([ Pawn.black(2, 4), Pawn.white(3, 4) ]);
-            position.lastMove = new Move(new Square(3, 3), new Square(3, 4));
+            const position = new Position(
+                [ Pawn.black(2, 4), Pawn.white(3, 4) ],
+                new Move(new Square(3, 3), new Square(3, 4))
+            );
 
             const mechanics = new PawnMechanics(new Square(2, 4), position);
 
