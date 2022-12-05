@@ -7,3 +7,10 @@ export enum PieceType {
     PAWN = "pawn",
     NULL = "",
 }
+
+export type PromotionType =
+    PieceType.QUEEN
+    | PieceType.ROOK
+    | PieceType.BISHOP
+    | PieceType.KNIGHT
+    | PieceType.NULL;

@@ -1,5 +1,6 @@
 import { describe, test, expect } from "@jest/globals";
 import { Color } from ".";
+import { PieceType } from "../enums/PieceType";
 import Move from "./Move";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./Pieces";
 import Position from "./Position";

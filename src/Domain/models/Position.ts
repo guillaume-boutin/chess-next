@@ -1,6 +1,7 @@
 import Color from "./Color";
 import { Piece } from "./Pieces";
 import { Move, Square } from ".";
+import { PieceType } from "../enums/PieceType";
 
 class Position {
     private _pieces: Piece[];
@@ -37,7 +38,6 @@ class Position {
         return !this.getPiece(square).isNull;
     }
 
-
     isOccupiedByColor(color: Color, square: Square) {
         const piece = this.getPiece(square);
         if (piece.isNull) return false;
@@ -53,6 +53,12 @@ class Position {
         pieces = [ ...pieces.slice(-0, index), ...pieces.slice(index+1) ];
 
         return new Position(pieces, this.lastMove.copy())
+    }
+
+    addPiece(piece: Piece): Position {
+        let position = this.removeAt(piece.square);
+
+        return new Position([ ...position.pieces, piece ]);
     }
 
     private _copyPieces(): Piece[] {
