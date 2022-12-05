@@ -1,9 +1,14 @@
+import { PieceType } from "../../Domain/enums/PieceType";
 import style from "./MoveMarker.module.css";
 
-function MoveMarker() {
+interface IProps {
+    piece: PieceType
+}
+
+function MoveMarker({ piece }: IProps) {
     return (
         <div className={style.moveMarker}>
-            <div></div>
+            <div className={ piece === PieceType.NULL ? style.empty : style.piece } />
         </div>
     )
 }

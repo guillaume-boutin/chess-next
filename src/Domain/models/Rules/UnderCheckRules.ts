@@ -1,12 +1,18 @@
-import { Color, Position, PotentialMoves, Square } from "..";
+import { Color, Position, PotentialMoves } from "..";
 
 class UnderCheckRules {
+    private _color: Color;
     private _position: Position;
     private _potentialMoves: PotentialMoves;
 
-    constructor(position: Position) {
+    constructor(color: Color, position: Position) {
+        this._color = color;
         this._position = position;
         this._potentialMoves = new PotentialMoves(position);
+    }
+
+    get color(): Color {
+        return this._color;
     }
 
     get position(): Position {
@@ -17,9 +23,9 @@ class UnderCheckRules {
         return this._potentialMoves;
     }
 
-    isUnderCheck(color: Color): boolean {
+    isUnderCheck(): boolean {
         const king = this.position.pieces.find(piece =>
-            piece.color.equals(color) && piece.isKing
+            piece.color.equals(this.color) && piece.isKing
         );
 
         if (!king) return false;

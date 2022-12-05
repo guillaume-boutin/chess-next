@@ -1,4 +1,4 @@
-import Square from "./Square";
+import { Square } from ".";
 
 class Move {
     public start: Square;

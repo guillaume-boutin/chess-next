@@ -1,5 +1,5 @@
 import { Move, Position, Square } from "..";
-import { King, Piece } from "../Pieces";
+import { Piece } from "../Pieces";
 import UnderCheckRules from "./UnderCheckRules";
 
 class CastleRules {
@@ -41,14 +41,14 @@ class CastleRules {
         if (!this.attemptingCastle()) return false;
 
         // Can't castle if king is under check
-        if (new UnderCheckRules(this._position).isUnderCheck(this._piece.color)) return false;
+        if (new UnderCheckRules(this._piece.color, this._position).isUnderCheck()) return false;
 
         // Can't castle if crossing through a check
         const crossingSquare = this._move.start.plus(new Square(this._direction, 0));
         const newPosition = this._position.apply(
             new Move(this._move.start, crossingSquare)
         );
-        if (new UnderCheckRules(newPosition).isUnderCheck(this._piece.color)) return false;
+        if (new UnderCheckRules(this._piece.color, newPosition).isUnderCheck()) return false;
 
         return true;
     }

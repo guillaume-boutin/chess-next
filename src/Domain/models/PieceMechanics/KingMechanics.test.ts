@@ -1,5 +1,5 @@
 import { describe, test, expect } from "@jest/globals"
-import { Color, Move, Position, Square } from "..";
+import { Position, Square } from "..";
 import { Bishop, King, Knight, Queen, Rook } from "../Pieces";
 import KingMechanics from "./KingMechanics";
 

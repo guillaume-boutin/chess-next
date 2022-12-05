@@ -1,5 +1,5 @@
 import { Piece } from ".";
-import { Color, Position, Square } from "..";
+import { Color, Square } from "..";
 import { PieceType } from "../../enums/PieceType";
 
 class Queen {

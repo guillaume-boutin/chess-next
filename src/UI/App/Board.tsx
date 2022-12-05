@@ -2,7 +2,7 @@
 
 import style from "./Board.module.css";
 import { Square } from ".";
-import { Board as BoardModel, Square as SquareModel, Move as MoveModel, Color } from "../../Domain/models";
+import { Board as BoardModel, Square as SquareModel } from "../../Domain/models";
 import { Piece as PieceModel } from "../../Domain/models/Pieces";
 
 interface IProps {

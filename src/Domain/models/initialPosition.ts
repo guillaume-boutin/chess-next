@@ -5,8 +5,6 @@ export const initialPosition = () => {
     let pieces;
     pieces = initialPieces();
 
-    // pieces = [ Pawn.white(5,2)];
-
     return new Position(pieces);
 }
 

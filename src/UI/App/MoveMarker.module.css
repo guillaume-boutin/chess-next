@@ -7,10 +7,17 @@
     align-items: center;
 }
 
-.moveMarker > div {
-    width: 60%;
-    height: 60%;
-    background: green;
-    opacity: 30%;
+.moveMarker > .empty {
+    width: 30%;
+    height: 30%;
+    background: black;
+    opacity: 20%;
     border-radius: 50%;
+}
+
+.moveMarker > .piece {
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    border: 10px solid rgba(0, 0, 0, 0.2);
 }

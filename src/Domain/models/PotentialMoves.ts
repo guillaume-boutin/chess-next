@@ -1,6 +1,5 @@
 import { Color, Move, Position, Square } from ".";
 import { PieceMechanics } from "./PieceMechanics";
-import { Pawn } from "./Pieces";
 
 class PotentialMoves {
     private _position: Position;

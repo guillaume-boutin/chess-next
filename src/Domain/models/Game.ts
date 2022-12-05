@@ -1,4 +1,4 @@
-import { Board, Position } from ".";
+import { Board } from ".";
 import Color from "./Color";
 import Move from "./Move";
 
@@ -26,6 +26,7 @@ class Game {
 
     punch() {
         this.toPlay = this.toPlay.opposite;
+        this.board.punch();
 
         // punch the clock
 

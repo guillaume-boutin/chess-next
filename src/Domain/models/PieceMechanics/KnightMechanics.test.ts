@@ -1,6 +1,6 @@
 import { describe, test, expect } from "@jest/globals"
 import { KnightMechanics } from ".";
-import { Color, Position, Square } from "..";
+import { Position, Square } from "..";
 import { Knight, Bishop } from "../Pieces";
 
 describe("Knight mechanics", () => {

@@ -1,7 +1,6 @@
 import Color from "./Color";
-import { King, Piece } from "./Pieces";
-import { Move, PotentialMoves, Square } from ".";
-import { CastleRules } from "./Rules";
+import { Piece } from "./Pieces";
+import { Move, Square } from ".";
 
 class Position {
     private _pieces: Piece[];
@@ -49,7 +48,7 @@ class Position {
     removeAt(square: Square): Position {
         let pieces = this._copyPieces();
         const index = pieces.findIndex(p => p.square.equals(square));
-        if (index === -1) return this;
+        if (index === -1) return new Position(pieces, this.lastMove.copy());
 
         pieces = [ ...pieces.slice(-0, index), ...pieces.slice(index+1) ];
 

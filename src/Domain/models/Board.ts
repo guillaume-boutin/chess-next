@@ -1,46 +1,75 @@
-import { Color, Move, Position, Square } from ".";
-import { King } from "./Pieces";
-import { CastleRules } from "./Rules";
+import { Color, Move, Position, PotentialMoves } from ".";
+import { CastleRules, EnPassantRules, UnderCheckRules } from "./Rules";
 
 class Board {
-    public position: Position;
-
-    public toPlay: Color;
-
-    public legalMoves: Move[] = [];
+    private _position: Position;
+    private _toPlay: Color;
+    private _legalMoves: Move[] = [];
 
     constructor(position: Position, toPlay: Color) {
-        this.position = position;
-        this.toPlay = toPlay;
-        // this._setLegalMoves(toPlay);
+        this._position = position;
+        this._toPlay = toPlay;
+        this._setLegalMoves();
     }
 
-    // isLegal(move: Move): boolean {
-    //     return this.legalMoves.findIndex(lm => lm.equals(move)) > -1;
-    // }
+    get position(): Position {
+        return this._position;
+    }
 
-    // applyMove(move: Move) {
-    //     this.position.applyMove(move);
-    //     this.toPlay = this.toPlay.opposite;
-    //     this._setLegalMoves(this.toPlay);
-    // }
+    get toPlay(): Color {
+        return this._toPlay;
+    }
 
-    // _setLegalMoves(color: Color) {
-    //     const potentialMoves = this.position.potentialMoves.getByColor(color);
+    get legalMoves(): Move[] {
+        return this._legalMoves;
+    }
 
-    //     this.legalMoves = potentialMoves.filter(pm => {
-    //         const possiblePosition = new Position(this.position.pieces.map(p => p.copy()));
-    //         possiblePosition.applyMove(pm);
+    isLegal(move: Move): boolean {
+        if (!this.position.isOccupiedByColor(this.toPlay, move.start)) return false;
 
-    //         if (possiblePosition.isKingUnderCheck(color)) return false;
+        return this.legalMoves.findIndex(lm => lm.equals(move)) > -1;
+    }
 
-    //         if (!new CastleRules(pm, this.position).isLegal()) return false;
+    applyMove(move: Move) {
+        const castleRules = new CastleRules(move, this.position);
 
-    //         return true;
-    //     });
-    // }
+        if (castleRules.attemptingCastle()) {
+            this._position = castleRules.apply();
+            return;
+        }
 
-    _setLegalMoves() {
+        const enPassantRules = new EnPassantRules(move, this.position);
+        if (enPassantRules.attemptingEnPassant()) {
+            this._position = enPassantRules.apply();
+            return;
+        }
+
+        this._position = this.position.apply(move);
+    }
+
+    punch() {
+        this._toPlay = this._toPlay.opposite;
+        this._setLegalMoves();
+    }
+
+    private _setLegalMoves() {
+        const potentialMoves = new PotentialMoves(this.position);
+
+        this._legalMoves = potentialMoves
+            .forColor(this.toPlay)
+            .filter(move => {
+                // reject if move puts under a check
+                if (new UnderCheckRules(this.toPlay, this.position.apply(move)).isUnderCheck())
+                    return false;
+
+                // reject if move is a failed attempt to castle
+                const castleRules = new CastleRules(move, this.position);
+                if (castleRules.attemptingCastle())
+                    return castleRules.isLegal();
+
+                // move is legal
+                return true;
+            });
     }
 }
 

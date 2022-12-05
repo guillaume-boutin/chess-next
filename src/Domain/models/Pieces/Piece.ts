@@ -1,4 +1,4 @@
-import { Color, Move, Position, Square } from "..";
+import { Color, Move, Square } from "..";
 import { PieceType } from "../../enums/PieceType";
 
 class Piece {

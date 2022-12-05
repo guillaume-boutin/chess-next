@@ -22,12 +22,12 @@ function Square({ x, y, piece, movable, onClick }: IProps) {
 
     return (
         <div onClick={_handleClick} className={styles}>
-        {
-            movable ? <MoveMarker /> : null
-        }
         { piece.isNull
             ? null
             : <Piece type={piece.type} color={piece.color.value} />
+        }
+        { movable
+            ? <MoveMarker piece={piece.type} /> : null
         }
         </div>
     )

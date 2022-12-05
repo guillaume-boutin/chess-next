@@ -1,4 +1,3 @@
-import { Pawn } from "../Pieces";
 import { Color, Move, Square } from "..";
 import { PieceMechanics } from ".";
 
