@@ -28,13 +28,15 @@ export class PromotionRules {
 
         if (!piece.isPawn) return false;
 
-        if (this.move.promotion === PieceType.NULL) return false;
-
         if (piece.color.equals(Color.white())) return this.move.end.y === 8;
 
-        if (piece.color.equals(Color.black())) return this.move.end.y === 1;
+        return this.move.end.y === 1;
+    }
 
-        return true;
+    isLegal(): boolean {
+        if (!this.attemptingPromotion()) return false;
+
+        return this.move.promotion !== PieceType.NULL;
     }
 
     apply() {

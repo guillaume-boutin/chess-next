@@ -1,5 +1,7 @@
 import { Color, Move, Position, PotentialMoves } from ".";
-import { CastleRules, EnPassantRules, UnderCheckRules } from "./Rules";
+import { PieceType } from "../enums/PieceType";
+import { CastleRules, EnPassantRules, PromotionRules, UnderCheckRules } from "./Rules";
+import { PromotionType } from "../enums/PieceType";
 
 class Board {
     private _position: Position;
@@ -27,7 +29,11 @@ class Board {
     isLegal(move: Move): boolean {
         if (!this.position.isOccupiedByColor(this.toPlay, move.start)) return false;
 
-        return this.legalMoves.findIndex(lm => lm.equals(move)) > -1;
+        return this.legalMoves.findIndex(lm => {
+            if (move.promotion !== PieceType.NULL) move = new Move(move.start, move.end);
+
+            return move.equals(lm);
+        }) > -1;
     }
 
     applyMove(move: Move) {
@@ -41,6 +47,12 @@ class Board {
         const enPassantRules = new EnPassantRules(move, this.position);
         if (enPassantRules.attemptingEnPassant()) {
             this._position = enPassantRules.apply();
+            return;
+        }
+
+        const promotionRules = new PromotionRules(move, this.position);
+        if (promotionRules.attemptingPromotion()) {
+            this._position = promotionRules.apply();
             return;
         }
 
@@ -66,6 +78,10 @@ class Board {
                 const castleRules = new CastleRules(move, this.position);
                 if (castleRules.attemptingCastle())
                     return castleRules.isLegal();
+
+                // reject move if it's a failed attempt to promote
+                if (move.promotion !== PieceType.NULL)
+                    return new PromotionRules(move, this.position).isLegal();
 
                 // move is legal
                 return true;

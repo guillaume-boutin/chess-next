@@ -6,7 +6,7 @@ import PromotionRules from "./PromotionRules";
 
 describe("Promotion Rules", () => {
     describe("attemptingPromotion method", () => {
-        test("Rules can tell if a move is a promotion", () => {
+        test("Move is legal under normal circumstances", () => {
             const startSquare = new Square(2, 7);
             const endSquare = new Square(2, 8);
             const move = new Move(startSquare, endSquare, PieceType.QUEEN);
@@ -15,10 +15,10 @@ describe("Promotion Rules", () => {
 
             const rules = new PromotionRules(move, position);
 
-            expect(rules.attemptingPromotion()).toBe(true);
+            expect(rules.isLegal()).toBe(true);
         });
 
-        test("Rule can tell move is not a promotion if piece is not a pawn", () => {
+        test("Move is not legal if piece is not a pawn", () => {
             const startSquare = new Square(2, 7);
             const endSquare = new Square(2, 8);
             const move = new Move(startSquare, endSquare, PieceType.QUEEN);
@@ -27,10 +27,10 @@ describe("Promotion Rules", () => {
 
             const rules = new PromotionRules(move, position);
 
-            expect(rules.attemptingPromotion()).toBe(false);
+            expect(rules.isLegal()).toBe(false);
         });
 
-        test("Rule can tell move by white is not a promotion if it doesn't reach for 8th row", () => {
+        test("Move for white is not legal if it doesn;t reach for the 8th row", () => {
             const startSquare = new Square(2, 6);
             const endSquare = new Square(2, 7);
             const move = new Move(startSquare, endSquare, PieceType.QUEEN);
@@ -39,10 +39,10 @@ describe("Promotion Rules", () => {
 
             const rules = new PromotionRules(move, position);
 
-            expect(rules.attemptingPromotion()).toBe(false);
+            expect(rules.isLegal()).toBe(false);
         });
 
-        test("Rule can tell move by black is not a promotion if move it doesn't reach for 1st row", () => {
+        test("Move for black is not legal if it doesn't reach for the 1st row", () => {
             const startSquare = new Square(5, 3);
             const endSquare = new Square(5, 2);
             const move = new Move(startSquare, endSquare, PieceType.QUEEN);
@@ -51,10 +51,10 @@ describe("Promotion Rules", () => {
 
             const rules = new PromotionRules(move, position);
 
-            expect(rules.attemptingPromotion()).toBe(false);
+            expect(rules.isLegal()).toBe(false);
         });
 
-        test("Rule can tell move is not a promotion if it doesn't specify the promoted piece", () => {
+        test("Move is not legal if it doesn't specify the promoted piece", () => {
             const start = new Square(4, 7);
             const end = new Square(4, 8);
             const move = new Move(start, end);
@@ -62,7 +62,7 @@ describe("Promotion Rules", () => {
 
             const rules = new PromotionRules(move, position);
 
-            expect(rules.attemptingPromotion()).toBe(false);
+            expect(rules.isLegal()).toBe(false);
         });
     });
 

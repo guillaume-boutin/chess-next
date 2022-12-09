@@ -1,0 +1,92 @@
+.promotionMenu {
+    background: hsl(120, 11%, 80%);
+    display: flex;
+}
+
+.promotionMenu .piece {
+    width: 100%;
+    flex: 1;
+    background-size: contain;
+    cursor: pointer;
+}
+
+.promotionMenu .piece:hover {
+    background-color: hsl(120, 11%, 70%);
+}
+
+.promotionMenu.top {
+    grid-row-start: 1;
+    grid-row-end: 5;
+    flex-direction: column;
+}
+
+.promotionMenu.bottom {
+    grid-row-start: 5;
+    grid-row-end: 9;
+    flex-direction: column-reverse;
+}
+
+.promotionMenu.x1 {
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+.promotionMenu.x2 {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+.promotionMenu.x3 {
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+.promotionMenu.x4 {
+    grid-column-start: 4;
+    grid-column-end: 5;
+}
+.promotionMenu.x5 {
+    grid-column-start: 5;
+    grid-column-end: 6;
+}
+.promotionMenu.x6 {
+    grid-column-start: 6;
+    grid-column-end: 7;
+}
+.promotionMenu.x7 {
+    grid-column-start: 7;
+    grid-column-end: 8;
+}
+.promotionMenu.x8 {
+    grid-column-start: 8;
+    grid-column-end: 9;
+}
+
+.promotionMenu > .white.queen {
+    background-image: url("/pieces/white-queen.png");
+}
+
+.promotionMenu > .white.knight {
+    background-image: url("/pieces/white-knight.png");
+}
+
+.promotionMenu > .white.rook {
+    background-image: url("/pieces/white-rook.png");
+}
+
+.promotionMenu > .white.bishop {
+    background-image: url("/pieces/white-bishop.png");
+}
+
+.promotionMenu > .black.queen {
+    background-image: url("/pieces/black-queen.png");
+}
+
+.promotionMenu > .black.knight {
+    background-image: url("/pieces/black-knight.png");
+}
+
+.promotionMenu > .black.rook {
+    background-image: url("/pieces/black-rook.png");
+}
+
+.promotionMenu > .black.bishop {
+    background-image: url("/pieces/black-bishop.png");
+}
