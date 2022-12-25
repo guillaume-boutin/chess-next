@@ -5,17 +5,19 @@ import style from "./PromotionMenu.module.css";
 interface IProps {
     square: SquareModel,
     color: Color,
-    playingAs: Color,
+    viewAs: Color,
     onPick: (e: PromotionType) => void
 }
 
-export function PromotionMenu({ square, color, playingAs, onPick }: IProps) {
+export function PromotionMenu({ square, color, viewAs, onPick }: IProps) {
     function side(): string {
-        return color.equals(playingAs) ? "top" : "bottom";
+        return color.equals(viewAs) ? "top" : "bottom";
     }
 
     function row(): string {
-        return `x${square.x}`;
+        var _x = viewAs.equals(Color.white()) ?
+            square.x : 9 - square.x;
+        return `x${_x}`;
     }
 
     function onQueenClick() {

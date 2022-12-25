@@ -5,6 +5,10 @@ export const initialPosition = () => {
     let pieces;
     pieces = initialPieces();
 
+    pieces = [
+        Pawn.white(2,7), Pawn.black(7,2)
+    ]
+
     return new Position(pieces);
 }
 

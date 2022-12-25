@@ -56,7 +56,7 @@ function Game() {
 
     return <Board
         model={model.board}
-        playingAs={Color.white()}
+        viewAs={Color.white()}
         onClick={onBoardClick}
         grabbedPiece={grabbedPiece}
         promotingSquare={promotingSquare}

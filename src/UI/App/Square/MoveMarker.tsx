@@ -1,4 +1,4 @@
-import { PieceType } from "../../Domain/enums/PieceType";
+import { PieceType } from "../../../Domain/enums/PieceType";
 import style from "./MoveMarker.module.css";
 
 interface IProps {
