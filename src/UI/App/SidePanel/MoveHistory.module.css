@@ -1,0 +1,25 @@
+.base {
+    background-color: lightgray;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.moveList {
+    padding: 12px;
+    width: 100%;
+    flex: 1;
+}
+
+.turnRow {
+    display: flex;
+}
+
+.turnNumber {
+    width: 36px;
+}
+
+.move {
+    flex: 1;
+}

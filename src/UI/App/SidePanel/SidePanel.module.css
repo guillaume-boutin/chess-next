@@ -1,0 +1,8 @@
+.base {
+    width: 400px;
+    height: 100%;
+    padding: 20px 0;
+
+    display: flex;
+    flex-direction: column;
+}

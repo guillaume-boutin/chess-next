@@ -7,6 +7,7 @@ import { Game as GameModel, Board as BoardModel, Move as MoveModel, Color, Squar
 import { initialPosition } from "../../Domain/models/initialPosition";
 import { Piece as PieceModel } from "../../Domain/models/Pieces";
 import { PromotionRules } from "../../Domain/models/Rules";
+import { SidePanel } from "./SidePanel";
 
 function Game() {
     const [ model, setModel ] = useState<GameModel>(new GameModel(
@@ -54,13 +55,22 @@ function Game() {
         _applyMove(move);
     }
 
-    return <Board
-        model={model.board}
-        viewAs={Color.white()}
-        onClick={onBoardClick}
-        grabbedPiece={grabbedPiece}
-        promotingSquare={promotingSquare}
-        onPromotionPiecePick={_onPromotionPick} />
+    return (
+        <>
+            <Board
+                model={model.board}
+                viewAs={Color.white()}
+                onClick={onBoardClick}
+                grabbedPiece={grabbedPiece}
+                promotingSquare={promotingSquare}
+                onPromotionPiecePick={_onPromotionPick}
+            />
+
+            <SidePanel
+                moveHistory={model.moveHistory}
+            />
+        </>
+    )
 }
 
 export default Game;
